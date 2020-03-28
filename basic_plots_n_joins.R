@@ -104,7 +104,7 @@ day_by_day_plot(la_gt_50)
 
 growth_rate_plot(la_gt_50) 
 
-day_by_day_plot(wisc_counties %>% filter(county=='Milwaukee'))
+day_by_day_plot(counties %>% filter(county %in% c('Milwaukee','Orleans','New York City')))
 
 day_by_day_plot(la_gt_50 %>% filter(county=='Orleans'))
 
