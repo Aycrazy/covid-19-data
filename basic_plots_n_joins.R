@@ -59,22 +59,26 @@ calculate_growth_rate <- function(x){
   return(y)
 }
 
-day_by_day_plot <- function(x){
-  x %>%
+day_by_day_plot <- function(x, facet_on = FALSE){
+  plot <- x %>%
     group_by(county) %>%
     ggplot() +
-    geom_line(aes(x=date, y = cases, color = county))+
-    facet_wrap(~county)
+    geom_line(aes(x=date, y = cases, color = county))
+  if(facet_on){
+    plot+facet_wrap(~county)}
+  else{plot}
 }
 
-growth_rate_plot<- function(x) {
-  x %>%
+growth_rate_plot<- function(x, facet_on = FALSE) {
+  plot <- x %>%
     group_by(county) %>%
     mutate_each(growth, cases, deaths)  %>% 
     ggplot() +
     geom_line(aes(x=date, y = cases, color = county))+
-    facet_wrap(~county) +
     labs(y='cases growth rate')
+  if(facet_on){
+    plot+facet_wrap(~county)}
+  else{plot}
 }
 
 cases_gt50 %>% left_join(wisco_health_sub,by=c('fips'='FIPS'))
@@ -92,10 +96,15 @@ cases_gt50_cums
 louisiana_counties <- counties %>%
   filter(state=='Louisiana')
 
-la_gt_50 <- get_xgt50(louisiana_counties)
+la_gt_50 <- get_gt50(louisiana_counties, facet_on =TRUE)
 
-la_gt_50 <- calculate_growth_rate(la_gt_50)
+la_gt_50 <- calculate_growth_rate(la_gt_50, facet_on = TRUE)
 
 day_by_day_plot(la_gt_50)
 
-growth_rate_plot(la_gt_50)  
+growth_rate_plot(la_gt_50) 
+
+day_by_day_plot(wisc_counties %>% filter(county=='Milwaukee'))
+
+day_by_day_plot(la_gt_50 %>% filter(county=='Orleans'))
+
