@@ -83,11 +83,12 @@ growth_rate_plot<- function(x, facet_on = FALSE) {
 
 cases_gt50 %>% left_join(wisco_health_sub,by=c('fips'='FIPS'))
 
+wisc_gt_50 <- get_xgt50(wisc_counties)
+
+growth_rate_plot(wisc_gt_50 )
 
 
-
-
-growth_rate_plot(cases_gt50_cums)
+growth_rate_plot(cases_gt50_cums %>% filter(county == 'Milwaukee'))
 
 cases_gt50_cums 
 
@@ -107,4 +108,7 @@ growth_rate_plot(la_gt_50)
 day_by_day_plot(counties %>% filter(county %in% c('Milwaukee','Orleans','New York City')))
 
 day_by_day_plot(la_gt_50 %>% filter(county=='Orleans'))
+
+
+day_by_day_plot(wisc_counties %>% filter(county=='Milwaukee'))
 
